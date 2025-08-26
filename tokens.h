@@ -7,31 +7,31 @@
 #include <stdint.h>
 
 typedef enum : uint8_t {
-    // One byte punctuators
-    TOK_L_PAREN = 40,   // (
-    TOK_R_PAREN = 41,   // )
-    TOK_L_SQUARE = 91,  // [
-    TOK_R_SQUARE = 93,  // ]
-    TOK_L_BRACE = 123,  // {
-    TOK_R_BRACE = 125,  // }
-    TOK_COMMA = 44,     // ,
-    TOK_SEMI = 59,      // ;
-    TOK_PLUS = 43,      // +
-    TOK_MINUS = 45,     // -
-    TOK_TILDE = 126,    // ~
-    TOK_PERCENT = 37,   // %
-    TOK_LESS = 60,      // <
-    TOK_GREATER = 62,   // >
-    TOK_QUESTION = 63,  // ?
-    TOK_EXCLAIM = 33,   // !
-    TOK_STAR = 42,      // *
-    TOK_CARET = 94,     // ^
-    TOK_AMP = 38,       // &
-    TOK_EQUAL = 61,     // =
-    TOK_PERIOD = 46,    // .
-    TOK_PIPE = 124,     // |
-    TOK_SLASH = 47,     // /
-    TOK_COLON = 58,     // :
+    // One byte punctuators: the values provided are just the ascii values for each element
+    TOK_L_PAREN = 40,   // (, x28
+    TOK_R_PAREN = 41,   // )  x29
+    TOK_L_SQUARE = 91,  // [  x5B
+    TOK_R_SQUARE = 93,  // ]  x5D
+    TOK_L_BRACE = 123,  // {  x7B
+    TOK_R_BRACE = 125,  // }  x7C
+    TOK_COMMA = 44,     // ,  x2C
+    TOK_SEMI = 59,      // ;  x3B
+    TOK_PLUS = 43,      // +  x2B
+    TOK_MINUS = 45,     // -  x2D
+    TOK_TILDE = 126,    // ~  x7E
+    TOK_PERCENT = 37,   // %  x25
+    TOK_LESS = 60,      // <  x3C
+    TOK_GREATER = 62,   // >  x3E
+    TOK_QUESTION = 63,  // ?  x3F
+    TOK_EXCLAIM = 33,   // !  x21
+    TOK_STAR = 42,      // *  x2A
+    TOK_CARET = 94,     // ^  x5E
+    TOK_AMP = 38,       // &  x26
+    TOK_EQUAL = 61,     // =  x3D
+    TOK_PERIOD = 46,    // .  x2E
+    TOK_PIPE = 124,     // |  x7C
+    TOK_SLASH = 47,     // /  x2F
+    TOK_COLON = 58,     // :  x3A
     // TOK_HASH,        // # (Ignored: handled by preprocessing)
 
     // Two byte punctuators

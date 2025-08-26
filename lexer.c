@@ -306,7 +306,7 @@ __m256i numeric_periods_mask(__m256i current_vec, __m256i next_vec, char last_ch
     uint64_t is_period = _mm256_movemask_epi8(
         _mm256_cmpeq_epi8(
             current_vec,
-            _mm256_set1_epi8('.')
+            _mm256_set1_epi8('.') //create a vector register with '.' repeated 32 times
         )
     );
     uint64_t has_num_after = _mm256_movemask_epi8(num_mask(look_ahead_one(current_vec, next_vec)));
@@ -317,7 +317,7 @@ __m256i numeric_periods_mask(__m256i current_vec, __m256i next_vec, char last_ch
 }
 
 __m256i vectorized_classification_one_byte(__m256i input) {
-    __m256i lower_nibble_mask = _mm256_set_epi8(
+    __m256i lower_nibble_mask = _mm256_set_epi8( //load 32 specified bytes into a vector register
             0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F,
             0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F,
             0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F, 0x0F,
@@ -328,21 +328,21 @@ __m256i vectorized_classification_one_byte(__m256i input) {
             0,  1,  1,  0,  0,  0,  1,  0,
             3,  15,  15,  11,  15,  3,  1,  1,
             0,  1,  1,  0,  0,  0,  1,  0
-    );
+    );                                               //bitwise and
+    __m256i tmp = _mm256_and_si256(lower_nibble_mask, input);
     __m256i mask1 = _mm256_shuffle_epi8(lookup1, _mm256_and_si256(lower_nibble_mask, input));
 
+    // Shift bits right, to get the high mask
     input = _mm256_srli_epi32 (input, 4);
-
     __m256i lookup2 = _mm256_set_epi8(
             0,  0,  0,  0,  0,  0,  0,  0,
             8,  0,  4,  0,  2,  1,  0,  0,
             0,  0,  0,  0,  0,  0,  0,  0,
             8,  0,  4,  0,  2,  1,  0,  0
     );
-
+                                                     //bitwise and
     __m256i mask2 = _mm256_shuffle_epi8(lookup2, _mm256_and_si256(lower_nibble_mask, input));
-
-    __m256i mask = _mm256_and_si256(mask1, mask2);
+    __m256i mask = _mm256_and_si256(mask1, mask2); // bitwise and
     __m256i cmp = _mm256_cmpeq_epi8(mask, _mm256_setzero_si256());
 
     return _mm256_xor_si256(
@@ -950,6 +950,11 @@ void block_comments_sub_lex(__m256i *current_vec, __m256i *next_vec, bool *block
     remove_prefix_64(next_vec, carry);
 }
 
+/**
+ *
+ * @param pos load 32 bytes from pos into a vector register
+ * @return    vector register
+ */
 __m256i load_vector(const char* pos) {
     return _mm256_loadu_si256((__m256i*) pos);
 }
